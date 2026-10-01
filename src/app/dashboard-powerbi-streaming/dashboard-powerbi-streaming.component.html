@@ -1,0 +1,253 @@
+<div class="cabecalho-dashboard">
+  <div>
+    <h1>Spotify vs. YouTube Music — painel comparativo</h1>
+    <p>Assinantes, receita, investimento e monetização · dados públicos até o 2º trimestre de 2026</p>
+  </div>
+  <div class="atualizacao"><span class="ponto"></span> Atualizado em set. 2026</div>
+</div>
+
+<main class="grade-dashboard">
+
+  <div class="linha-indicadores">
+    <div class="indicador" [class.spotify]="kpi.accent === 'sp'" [class.youtube]="kpi.accent === 'yt'"
+      *ngFor="let kpi of kpis">
+      <p class="rotulo-indicador">{{ kpi.label }}</p>
+      <p class="valor-indicador monoespaco">{{ kpi.value }}</p>
+      <p class="tendencia-indicador" [class.positivo]="kpi.trendType === 'pos'"
+        [class.estavel]="kpi.trendType === 'flat'">{{ kpi.trend }}
+      </p>
+    </div>
+  </div>
+
+  <div class="painel">
+    <div class="cabecalho-secao">
+      <h2>Crescimento de assinantes pagos</h2>
+      <p>Em milhões, por ano</p>
+      <div class="linha-legenda">
+        <span class="item-legenda"><span class="amostra-legenda" style="background:var(--spotify)"></span>Spotify</span>
+        <span class="item-legenda"><span class="amostra-legenda" style="background:var(--youtube)"></span>YouTube
+          Music+Premium</span>
+        <span class="observacao-nao-divulgado"><span class="amostra-legenda"></span>não divulgado</span>
+      </div>
+    </div>
+    <div style="position:relative;">
+      <span class="marcador spotify" [class.visivel]="growthPinVisible" [style.left.px]="growthPinLeft"
+        style="top:0px;">290M ·
+        maior base</span>
+      <div class="barras" #growthBars>
+        <div class="grupo-barras" *ngFor="let g of yearGroups">
+          <div class="par-barras">
+            <div class="coluna-barra">
+              <span class="valor-barra">{{ g.spotify.value }}</span>
+              <div class="barra" [style.height.%]="growthRevealed ? g.spotify.heightPct : 0"
+                style="background:var(--spotify)"></div>
+            </div>
+            <div class="coluna-barra">
+              <span class="valor-barra">{{ g.youtube.value }}</span>
+              <div class="barra" [class.nao-disponivel]="g.youtube.nd"
+                [style.height.%]="g.youtube.nd ? null : (growthRevealed ? g.youtube.heightPct : 0)"
+                [style.background]="g.youtube.nd ? null : 'var(--youtube)'"></div>
+            </div>
+          </div>
+          <span class="ano">{{ g.year }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="painel">
+    <div class="cabecalho-secao">
+      <h2>Fatia do mercado pago global</h2>
+      <p>Estimativa MIDiA Research · passe o mouse para destacar</p>
+    </div>
+    <div class="corpo-grafico-rosca">
+      <div class="envoltorio-rosca" #donutWrap>
+        <svg viewBox="0 0 200 200" width="168" height="168">
+          <circle cx="100" cy="100" r="80" fill="none" stroke="#EEF0F4" stroke-width="26"></circle>
+          <circle *ngFor="let seg of shareSegments; let i = index" cx="100" cy="100" r="80" fill="none"
+            [attr.stroke]="seg.color" stroke-width="26"
+            [attr.stroke-dasharray]="shareRevealed ? (seg.dash + ' ' + (circumference - seg.dash)) : ('0 ' + circumference)"
+            [attr.stroke-dashoffset]="seg.offset"
+            style="transform: rotate(-90deg); transform-origin: 100px 100px; transition: stroke-dasharray 0.9s cubic-bezier(.16,.9,.28,1), opacity 0.2s ease;"
+            [style.opacity]="activeShareIndex === null || activeShareIndex === i ? 1 : 0.28"
+            (mouseenter)="setActiveShare(i)" (mouseleave)="setActiveShare(null)"></circle>
+        </svg>
+        <div class="centro-rosca">
+          <span class="numero">{{ donutCenterValue }}</span>
+          <span class="rotulo">{{ donutCenterLabel }}</span>
+        </div>
+        <span class="marcador spotify" [class.visivel]="donutPinVisible" style="top:-6px; left:96px;">líder,
+          70,6%</span>
+      </div>
+      <ul class="legenda">
+        <li *ngFor="let seg of shareSegments; let i = index" [class.ativo]="activeShareIndex === i"
+          (mouseenter)="setActiveShare(i)" (mouseleave)="setActiveShare(null)">
+          <span class="amostra-legenda" [style.background]="seg.color"></span>
+          <span class="nome-legenda">{{ seg.name }}</span>
+          <span class="valor-legenda">{{ seg.value }}%</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="painel">
+    <div class="cabecalho-secao">
+      <h2>Pagamento médio por stream</h2>
+      <p>Em R$, estimativa de mercado</p>
+    </div>
+    <div class="lista-pagamentos" #payoutList style="position:relative;">
+      <span class="marcador youtube" [class.visivel]="payoutPinVisible" [style.top.px]="payoutPinTop"
+        style="left:0px;">menor
+        pagamento por play</span>
+      <div class="linha-pagamento" [class.destacado]="p.hi" *ngFor="let p of payoutItems"
+        [attr.data-low]="p.low || null">
+        <span class="nome-pagamento">{{ p.name }}</span>
+        <span class="trilha-pagamento">
+          <span class="barra-pagamento" [style.width.%]="payoutRevealed ? p.widthPct : 0"
+            [style.background]="p.color"></span>
+        </span>
+        <span class="valor-pagamento">R$ {{ p.value.toFixed(4) }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="painel">
+    <div class="cabecalho-secao">
+      <h2>Plano individual</h2>
+      <p>Preço mensal nos EUA</p>
+    </div>
+    <div class="corpo-precos">
+      <div class="item-preco" *ngFor="let p of priceItems">
+        <span class="ponto" [style.background]="p.accent === 'sp' ? 'var(--spotify)' : 'var(--youtube)'"></span>
+        <div>
+          <p class="nome-plano">{{ p.name }}</p>
+          <p class="observacao-plano">{{ p.note }}</p>
+        </div>
+        <p class="preco-plano">{{ p.price }}<span>/mês</span></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="painel completo">
+    <div class="cabecalho-secao">
+      <h2>Linha do tempo de investimento</h2>
+      <p>Principais movimentos de cada empresa</p>
+    </div>
+    <div class="linhas-tempo">
+      <div class="coluna-tempo spotify">
+        <h3><span class="ponto"></span>Spotify</h3>
+        <div class="evento-tempo"><span class="ano">2019</span><span class="descricao">Compra a Gimlet Media e a
+            Parcast, abrindo a
+            fase de investimento pesado em podcast.</span></div>
+        <div class="evento-tempo"><span class="ano">2020</span><span class="descricao">Fecha contrato de exclusividade
+            com Joe Rogan,
+            avaliado em cerca de R$605 milhões.</span></div>
+        <div class="evento-tempo"><span class="ano">2021</span><span class="descricao">Anuncia orçamento de R$18,10
+            bilhões para
+            melhorar podcast e audiolivro; compra a Findaway.</span></div>
+        <div class="evento-tempo"><span class="ano">2022–23</span><span class="descricao">Muda o discurso de
+            "crescimento" para
+            "eficiência" e corta ~20% do quadro.</span></div>
+        <div class="evento-tempo"><span class="ano">set. 2025</span><span class="descricao">Lança áudio lossless para
+            assinantes
+            Premium.</span></div>
+        <div class="evento-tempo"><span class="ano">out. 2025</span><span class="descricao">Assina acordos de
+            licenciamento de IA com
+            UMG, Sony, Warner, Merlin e Believe.</span></div>
+      </div>
+      <div class="coluna-tempo youtube">
+        <h3><span class="ponto"></span>YouTube Music / Google</h3>
+        <div class="evento-tempo"><span class="ano">2021–25</span><span class="descricao">Pagamento à indústria musical
+            cresce de
+            R$20,69 bilhões para R$41,37 bilhões, CAGR de 18,9%.</span></div>
+        <div class="evento-tempo"><span class="ano">2025</span><span class="descricao">Testa o Dream Track, geração de
+            música por IA
+            para os Shorts.</span></div>
+        <div class="evento-tempo"><span class="ano">out. 2025</span><span class="descricao">Fecha acordo com a UMG que
+            inclui
+            salvaguardas específicas para uso de IA.</span></div>
+        <div class="evento-tempo"><span class="ano">fev. 2026</span><span class="descricao">Adquire a startup
+            ProducerAI; equipe
+            entra no Google Labs e no Google DeepMind.</span></div>
+        <div class="evento-tempo"><span class="ano">2026</span><span class="descricao">Negócio de assinaturas do YouTube
+            atinge ritmo
+            anual de cerca de R$104 bilhões.</span></div>
+        <div class="evento-tempo"><span class="ano">2027 (anunciado)</span><span class="descricao">Catálogo de streaming
+            da Peacock
+            passa a integrar o YouTube Premium nos EUA.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="painel completo">
+    <div class="cabecalho-secao">
+      <h2>Ficha comparativa</h2>
+    </div>
+    <table class="tabela-comparativa">
+      <tr>
+        <th>Modelo de negócio</th>
+        <td class="spotify">Plataforma de áudio pura, monetizada quase só por assinatura</td>
+        <td class="youtube">Assinatura empacotada dentro do YouTube — a música é um dos motivos, não o único</td>
+      </tr>
+      <tr>
+        <th>Ritmo de crescimento</th>
+        <td class="spotify">Estável, MAU cresce ~12% a/a</td>
+        <td class="youtube">Acelerado, próximo de 40% a/a nos EUA (dado preliminar), partindo de base menor</td>
+      </tr>
+      <tr>
+        <th>Transparência</th>
+        <td class="spotify">Números exatos, publicados a cada trimestre</td>
+        <td class="youtube">Só marcos divulgados por comunicado; números do pacote, não da música isolada</td>
+      </tr>
+      <tr>
+        <th>Pagamento por stream</th>
+        <td class="spotify">Entre R$0,016 e R$0,026</td>
+        <td class="youtube">Entre R$0,0052 e R$0,01 — o mais baixo entre as grandes plataformas</td>
+      </tr>
+      <tr>
+        <th>Maior aposta recente</th>
+        <td class="spotify">Diversificação: podcast e audiolivro</td>
+        <td class="youtube">Distribuição: bundling com vídeo, Shorts e agora streaming de terceiros</td>
+      </tr>
+      <tr>
+        <th>Vantagem estrutural</th>
+        <td class="spotify">Algoritmo de recomendação e alcance em 184 mercados</td>
+        <td class="youtube">Base de usuários do YouTube — 2 bi de espectadores logados por mês</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="painel completo painel-destaques">
+    <div class="cabecalho-secao">
+      <h2>Principais pontos</h2>
+    </div>
+    <div class="destaques">
+      <div class="cartao-destaque">
+        <span class="selo-destaque">①</span>
+        <div>
+          <h4>Assimetria de divulgação</h4>
+          <p>O Spotify presta contas a investidores em bolsa a cada trimestre; o YouTube Music só aparece em comunicados
+            pontuais e nunca isolou seu número de música. Isso limita qualquer comparação ano a ano.</p>
+        </div>
+      </div>
+      <div class="cartao-destaque">
+        <span class="selo-destaque">②</span>
+        <div>
+          <h4>Mais assinantes não é mais pagamento</h4>
+          <p>Apesar da 4ª posição em fatia de mercado, o YouTube Music paga o menor valor médio por stream entre as
+            grandes plataformas — o volume de audiência de vídeo compensa o Google, não os detentores de direitos.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <p>Dados de fontes públicas: relatórios da Spotify Technology S.A. à SEC, comunicados da Spotify Newsroom, blog do
+    YouTube/Google, falas de Sundar Pichai em calls de resultados da Alphabet, MIDiA Research, Music Business Worldwide,
+    Digital Music News, Chartlex e IFPI Global Music Report 2026. Números do YouTube Music referem-se ao pacote
+    combinado com o YouTube Premium, já que a empresa não divulga assinantes de música isoladamente. Faixas de pagamento
+    por stream são estimativas de mercado, não valores oficiais divulgados pelas plataformas. Painel gerado em setembro
+    de 2026 para fins de portfólio acadêmico.</p>
+</footer>

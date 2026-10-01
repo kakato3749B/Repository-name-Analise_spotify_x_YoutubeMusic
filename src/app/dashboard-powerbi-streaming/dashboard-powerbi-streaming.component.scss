@@ -1,0 +1,751 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap');
+
+:host {
+  --bg: #EEF1F5;
+  --card: #FFFFFF;
+  --border: #E1E5EC;
+  --ink: #1B2130;
+  --muted: #667085;
+  --muted-2: #98A2B3;
+  --track: #EEF0F4;
+  --spotify: #1E9E5B;
+  --spotify-tint: #E6F6EC;
+  --youtube: #E2542D;
+  --youtube-tint: #FDEAE3;
+  --gold: #C9A227;
+  --slate: #64748B;
+  --blue: #2F6FED;
+  --neutral: #C7CBD3;
+  --up: #1E9E5B;
+  --radius: 10px;
+  --shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 1px 1px rgba(16, 24, 40, 0.03); display: block; background: var(--bg); color: var(--ink); font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+:host * {
+  box-sizing: border-box;
+}
+
+/* =========================================================
+TEXTO MONOESPAÇADO
+========================================================= */
+
+.monoespace {
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* =========================================================
+CABEÇALHO
+========================================================= */
+
+.cabecalho-dashboard {
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  padding: 20px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.cabecalho-dashboard h1 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+
+.cabecalho-dashboard p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.cabecalho-dashboard .atualizacao {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: var(--muted);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 6px 14px;
+}
+
+.atualizacao .ponto {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--spotify);
+}
+
+/* =========================================================
+GRADE PRINCIPAL
+========================================================= */
+
+.grade-dashboard {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 24px 32px 60px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.completo {
+  grid-column: 1 / -1;
+}
+
+/* =========================================================
+INDICADORES
+========================================================= */
+
+.linha-indicadores {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+}
+
+.indicador {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px 18px;
+}
+
+.indicador.spotify {
+  --accent: var(--spotify);
+}
+
+.indicador.youtube {
+  --accent: var(--youtube);
+}
+
+.indicador .rotulo-indicador {
+  font-size: 0.74rem;
+  color: var(--muted);
+  margin: 0 0 10px;
+  line-height: 1.3;
+}
+
+.indicador .valor-indicador {
+  font-size: 1.55rem;
+  font-weight: 700;
+  line-height: 1;
+  margin: 0 0 8px;
+}
+
+.indicador .tendencia-indicador {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.indicador .tendencia-indicador.positivo {
+  color: var(--up);
+}
+
+.indicador .tendencia-indicador.estavel {
+  color: var(--muted-2);
+  font-weight: 500;
+}
+
+/* =========================================================
+RESPONSIVIDADE DOS INDICADORES
+========================================================= */
+
+@media (max-width: 1100px) {
+  .linha-indicadores {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .linha-indicadores {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grade-dashboard {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+PAINÉIS
+========================================================= */
+
+.painel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px 22px 22px;
+  position: relative;
+}
+
+.cabecalho-secao {
+  margin-bottom: 16px;
+}
+
+.cabecalho-secao h2 {
+  font-size: 0.98rem;
+  font-weight: 700;
+  margin: 0 0 3px;
+}
+
+.cabecalho-secao p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* =========================================================
+LEGENDA
+========================================================= */
+
+.linha-legenda {
+  display: flex;
+  gap: 16px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.item-legenda {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.amostra-legenda {
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+}
+
+.observacao-nao-divulgado {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.76rem;
+  color: var(--muted-2);
+}
+
+.observacao-nao-divulgado .amostra-legenda {
+  width: 14px;
+  height: 8px;
+  border: 1px dashed var(--muted-2);
+  border-radius: 2px;
+}
+
+/* =========================================================
+MARCADORES
+========================================================= */
+
+.marcador {
+  position: absolute;
+  background: var(--ink);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  z-index: 5;
+  box-shadow: 0 3px 8px rgba(16, 24, 40, 0.18);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.marcador.visivel {
+  opacity: 1;
+}
+
+.marcador::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -5px;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid var(--ink);
+}
+
+.marcador.spotify {
+  background: var(--spotify);
+}
+
+.marcador.spotify::after {
+  border-top-color: var(--spotify);
+}
+
+.marcador.youtube {
+  background: var(--youtube);
+}
+
+.marcador.youtube::after {
+  border-top-color: var(--youtube);
+}
+
+/* =========================================================
+GRÁFICO DE CRESCIMENTO
+========================================================= */
+
+.barras {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+  height: 190px;
+  padding: 36px 4px 0;
+  position: relative;
+}
+
+.grupo-barras {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+}
+
+.par-barras {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.coluna-barra {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  width: 30px;
+}
+
+.coluna-barra .valor-barra {
+  font-size: 0.68rem;
+  color: var(--muted);
+  margin-bottom: 5px;
+  font-family: 'JetBrains Mono', monospace;
+  white-space: nowrap;
+}
+
+.barra {
+  display: block;
+  width: 100%;
+  height: 0%;
+  min-height: 0;
+  border-radius: 3px 3px 0 0;
+
+  transition:
+    height 1s cubic-bezier(.16, .9, .28, 1);
+
+  will-change: height;
+}
+
+.barra.nao-disponivel {
+  background: transparent !important;
+  border: 1.5px dashed var(--muted-2);
+  box-sizing: border-box;
+  height: 10%;
+}
+
+.grupo-barras .ano {
+  margin-top: 10px;
+  font-size: 0.76rem;
+  color: var(--muted-2);
+}
+
+/* =========================================================
+GRÁFICO DE ROSCA
+========================================================= */
+
+.corpo-grafico-rosca {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+}
+
+.envoltorio-rosca {
+  position: relative;
+  width: 168px;
+  height: 168px;
+  flex-shrink: 0;
+}
+
+.centro-rosca {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  pointer-events: none;
+}
+
+.centro-rosca .numero {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.centro-rosca .rotulo {
+  color: var(--muted);
+  font-size: 0.66rem;
+  max-width: 100px;
+  margin-top: 2px;
+}
+
+/* =========================================================
+LEGENDA DA ROSCA
+========================================================= */
+
+.legenda {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+}
+
+.legenda li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 4px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+}
+
+.legenda li:last-child {
+  border-bottom: none;
+}
+
+.legenda li:hover,
+.legenda li.ativo {
+  background: var(--bg);
+  border-radius: 6px;
+}
+
+.legenda .amostra-legenda {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.legenda .nome-legenda {
+  flex: 1;
+  font-size: 0.84rem;
+}
+
+.legenda .valor-legenda {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+/* =========================================================
+PAGAMENTO POR STREAM
+========================================================= */
+
+.lista-pagamentos {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 6px;
+}
+
+.linha-pagamento {
+  display: grid;
+  grid-template-columns: 112px 1fr 70px;
+  align-items: center;
+  gap: 12px;
+}
+
+.linha-pagamento .nome-pagamento {
+  font-size: 0.84rem;
+}
+
+.trilha-pagamento {
+  height: 9px;
+  background: var(--track);
+  border-radius: 5px;
+  position: relative;
+}
+
+.barra-pagamento {
+  display: block;
+  height: 100%;
+  width: 0%;
+  min-width: 0;
+  border-radius: 5px;
+
+  transition:
+    width 1.1s cubic-bezier(.16, .9, .28, 1);
+
+  will-change: width;
+}
+
+.linha-pagamento .valor-pagamento {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--muted);
+  text-align: right;
+}
+
+.linha-pagamento.destacado .nome-pagamento {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* =========================================================
+PREÇOS
+========================================================= */
+
+.corpo-precos {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.item-preco {
+  display: grid;
+  grid-template-columns: 16px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.item-preco .ponto {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.item-preco .nome-plano {
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+.item-preco .observacao-plano {
+  font-size: 0.76rem;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.item-preco .preco-plano {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.15rem;
+  font-weight: 700;
+  text-align: right;
+}
+
+.item-preco .preco-plano span {
+  font-size: 0.68rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* =========================================================
+LINHA DO TEMPO
+========================================================= */
+
+.linhas-tempo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 28px;
+}
+
+.coluna-tempo h3 {
+  font-size: 0.86rem;
+  font-weight: 700;
+  margin: 0 0 12px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--cor-tempo);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.coluna-tempo h3 .ponto {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--cor-tempo);
+}
+
+.coluna-tempo.spotify {
+  --cor-tempo: var(--spotify);
+}
+
+.coluna-tempo.youtube {
+  --cor-tempo: var(--youtube);
+}
+
+.evento-tempo {
+  display: grid;
+  grid-template-columns: 58px 1fr;
+  gap: 12px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.evento-tempo:last-child {
+  border-bottom: none;
+}
+
+.evento-tempo .ano {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--muted-2);
+  font-size: 0.74rem;
+  padding-top: 2px;
+}
+
+.evento-tempo .descricao {
+  font-size: 0.84rem;
+  color: var(--ink);
+  line-height: 1.45;
+}
+
+/* =========================================================
+RESPONSIVIDADE DA LINHA DO TEMPO
+========================================================= */
+
+@media (max-width: 900px) {
+  .linhas-tempo {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+/* =========================================================
+TABELA COMPARATIVA
+========================================================= */
+
+.tabela-comparativa {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.84rem;
+  margin-top: 4px;
+}
+
+.tabela-comparativa th,
+.tabela-comparativa td {
+  text-align: left;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.tabela-comparativa th {
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 0.74rem;
+  width: 20%;
+  background: var(--bg);
+}
+
+.tabela-comparativa td.spotify {
+  border-left: 3px solid var(--spotify);
+}
+
+.tabela-comparativa td.youtube {
+  border-left: 3px solid var(--youtube);
+}
+
+.tabela-comparativa tr:hover td {
+  background: var(--bg);
+}
+
+/* =========================================================
+PRINCIPAIS PONTOS
+========================================================= */
+
+.destaques {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.cartao-destaque {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 18px;
+  display: flex;
+  gap: 12px;
+}
+
+.cartao-destaque .selo-destaque {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  background: #FCEFC7;
+  color: #946800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+.cartao-destaque h4 {
+  margin: 0 0 6px;
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.cartao-destaque p {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* =========================================================
+RESPONSIVIDADE DOS DESTAQUES
+========================================================= */
+
+@media (max-width: 900px) {
+  .destaques {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+RODAPÉ
+========================================================= */
+
+footer {
+  padding: 24px 32px 48px;
+  max-width: 1440px;
+  margin: 0 auto;
+  display: block;
+}
+
+footer p {
+  color: var(--muted-2);
+  font-size: 0.76rem;
+  line-height: 1.6;
+  margin: 0;
+}
