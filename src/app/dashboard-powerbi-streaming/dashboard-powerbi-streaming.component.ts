@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   Inject,
@@ -251,7 +252,9 @@ export class DashboardPowerbiStreamingComponent
     @Inject(PLATFORM_ID)
     private platformId: Object,
 
-    private zone: NgZone
+    private zone: NgZone,
+
+    private cd: ChangeDetectorRef
   ) {
 
     /*
@@ -306,13 +309,11 @@ export class DashboardPowerbiStreamingComponent
     this.initialAnimationFrame =
       requestAnimationFrame(() => {
 
-        this.zone.run(() => {
+        this.growthRevealed = true;
+        this.shareRevealed = true;
+        this.payoutRevealed = true;
 
-          this.growthRevealed = true;
-          this.shareRevealed = true;
-          this.payoutRevealed = true;
-
-        });
+        this.refreshView();
 
         /*
          * Segundo frame:
@@ -322,15 +323,13 @@ export class DashboardPowerbiStreamingComponent
         this.secondAnimationFrame =
           requestAnimationFrame(() => {
 
-            this.zone.run(() => {
+            this.positionGrowthPin();
 
-              this.positionGrowthPin();
+            this.donutPinVisible = true;
 
-              this.donutPinVisible = true;
+            this.positionPayoutPin();
 
-              this.positionPayoutPin();
-
-            });
+            this.refreshView();
 
           });
 
@@ -354,20 +353,20 @@ export class DashboardPowerbiStreamingComponent
         this.growthBarsRef.nativeElement,
         () => {
 
-          this.zone.run(() => {
+          this.growthRevealed = true;
 
-            this.growthRevealed = true;
+          this.refreshView();
 
-            this.clearGrowthTimeout();
+          this.clearGrowthTimeout();
 
-            this.growthTimeout =
-              setTimeout(() => {
+          this.growthTimeout =
+            setTimeout(() => {
 
-                this.positionGrowthPin();
+              this.positionGrowthPin();
 
-              }, 1050);
+              this.refreshView();
 
-          });
+            }, 1050);
 
         }
       );
@@ -380,20 +379,20 @@ export class DashboardPowerbiStreamingComponent
         this.donutWrapRef.nativeElement,
         () => {
 
-          this.zone.run(() => {
+          this.shareRevealed = true;
 
-            this.shareRevealed = true;
+          this.refreshView();
 
-            this.clearDonutTimeout();
+          this.clearDonutTimeout();
 
-            this.donutTimeout =
-              setTimeout(() => {
+          this.donutTimeout =
+            setTimeout(() => {
 
-                this.donutPinVisible = true;
+              this.donutPinVisible = true;
 
-              }, 950);
+              this.refreshView();
 
-          });
+            }, 950);
 
         }
       );
@@ -406,20 +405,20 @@ export class DashboardPowerbiStreamingComponent
         this.payoutListRef.nativeElement,
         () => {
 
-          this.zone.run(() => {
+          this.payoutRevealed = true;
 
-            this.payoutRevealed = true;
+          this.refreshView();
 
-            this.clearPayoutTimeout();
+          this.clearPayoutTimeout();
 
-            this.payoutTimeout =
-              setTimeout(() => {
+          this.payoutTimeout =
+            setTimeout(() => {
 
-                this.positionPayoutPin();
+              this.positionPayoutPin();
 
-              }, 1150);
+              this.refreshView();
 
-          });
+            }, 1150);
 
         }
       );
@@ -456,6 +455,23 @@ export class DashboardPowerbiStreamingComponent
     observer.observe(element);
 
     return observer;
+  }
+
+  /*
+   * Força a renderização do componente.
+   *
+   * O app roda em modo zoneless (sem zone.js), então mudanças de estado
+   * feitas dentro de requestAnimationFrame/setTimeout/IntersectionObserver
+   * não disparam detecção de mudanças sozinhas — sem isso, os gráficos
+   * só apareciam depois que um evento de mouse disparava a renderização.
+   */
+  private refreshView(): void {
+
+    this.zone.run(() => {
+
+      this.cd.detectChanges();
+
+    });
   }
 
   /*
